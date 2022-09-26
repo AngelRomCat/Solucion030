@@ -77,3 +77,80 @@ function miAjax(param) {
 		});
 	}
 }
+
+function miPartialAjax(param) {
+	var miPartialTabla = "";
+	var miPartialTabla01 =
+		"   <table>" +
+		"        <thead>" +
+		"           <tr>" +
+		"               <th>EmployeeID</th>" +
+		"               <th>FirstName</th>" +
+		"               <th>LastName</th>" +
+		"               <th>Detail</th>" +
+		"           </tr>" +
+		"        </thead>" +
+		"        <tbody>";
+	var miPartialTabla02 = "";
+	var miPartialTabla03 =
+		"       </tbody>" +
+		"   </table>";
+
+	var miPartialTablaDetalle = "";
+	const opciones = {
+		method: 'GET'
+	}
+	const opcionesPost = {
+		method: 'POST'
+	}
+	//[{"EmployeeID":"1","LastName":"Davolio","FirstName":"Nancy","Title":"Sales Representative","TitleOfCourtesy":"Ms.","BirthDate":"1948-12-08 00:00:00","HireDate":"1992-05-01 00:00:00","Address":"507 - 20th Ave. E.Apt. 2A","City":"Seattle","Region":"WA","PostalCode":"98122","Country":"USA","HomePhone":"(206) 555-9857","Extension":"5467","Photo":null,"Notes":"Education includes a BA in psychology from Colorado State University in 1970. She also completed \"The Art of the Cold Call.\" Nancy is a member of Toastmasters International.","ReportsTo":"2","PhotoPath":"http:\/\/accweb\/emmployees\/davolio.bmp","Salary":"2954.55"},
+	if (param == null || param == 0) {
+		//fetch('https://tupelu.es/Ajax_y_Json/ajax_northwind_mysql/ajax_actual_fetch/detail/consulta.php', opciones)
+		fetch('https://localhost:44351/Api/Empleados', opciones)
+			.then(respuesta => respuesta.json())
+			.then(resultado => {
+				fetch('https://localhost:44351/Empleados/_PartialList', opcionesPost)
+					.then(respuestaDeLaRespuesta => respuestaDeLaRespuesta.json())
+					.then(resultadoDelResultado => {
+					document.getElementById("dvPartial").innerHTML = resultadoDelResultado;
+					});
+			});
+	} else {
+		//fetch('https://tupelu.es/Ajax_y_Json/ajax_northwind_mysql/ajax_actual_fetch/detail/consulta.php?id=' + param, opciones)
+		fetch('https://localhost:44351/Api/Empleados/' + param, opciones)
+			.then(respuesta => respuesta.json())
+			.then(resultado => {
+				//	resultado.forEach(elemento => {            
+				miPartialTablaDetalle = miPartialTablaDetalle +
+					"   			   <table>" +
+					"                    <tr>" +
+					"						 <th>EmployeeID</th>" +
+					/*		"                        <td>" + elemento.EmployeeID + "</td>" +*/
+					/*		"                        <td>" + resultado[0].EmployeeID + "</td>" +*/
+					"                        <td>" + resultado.EmployeeID + "</td>" +
+					"                    </tr>" +
+					"                    <tr>" +
+					"						 <th>FirstName</th>" +
+					/*		"                        <td>" + elemento.FirstName + "</td>" +*/
+					/*		"                        <td>" + resultado[0].FirstName + "</td>" +*/
+					"                        <td>" + resultado.FirstName + "</td>" +
+					"                    </tr>" +
+					"                    <tr>" +
+					"						 <th>LastName</th>" +
+					/*		"                        <td>" + elemento.LastName + "</td>" +*/
+					/*		"                        <td>" + resultado[0].LastName + "</td>" +*/
+					"                        <td>" + resultado.LastName + "</td>" +
+					"                    </tr>" +
+					"                    <tr>" +
+					"						 <th>Imagen</th>" +
+					/*		"                        <td><img src=\"https://tupelu.es/Ajax_y_Json/ajax_northwind_mysql/ajax_actual_fetch/detail/Images/empleado/" + elemento.EmployeeID + ".jpg\"></td>" +*/
+					/*		"                        <td><img src=\"https://tupelu.es/Ajax_y_Json/ajax_northwind_mysql/ajax_actual_fetch/detail/Images/empleado/" + resultado[0].EmployeeID + ".jpg\"></td>" +*/
+					"                        <td><img src=\"https://tupelu.es/Ajax_y_Json/ajax_northwind_mysql/ajax_actual_fetch/detail/Images/empleado/" + resultado.EmployeeID + ".jpg\"></td>" +
+					"                    </tr>" +
+					"   			   </table>";
+				//	});
+				//miPartialTabla = miPartialTabla01 + miPartialTabla02 + miPartialTabla03;    
+				document.getElementById("miPartialTablaDetalle").innerHTML = miPartialTablaDetalle;
+			});
+	}
+}
